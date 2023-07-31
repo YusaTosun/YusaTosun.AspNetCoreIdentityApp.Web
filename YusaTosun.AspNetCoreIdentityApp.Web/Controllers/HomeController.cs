@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using YusaTosun.AspNetCoreIdentityApp.Web.Models;
+using YusaTosun.AspNetCoreIdentityApp.Web.ViewModels;
 
 namespace YusaTosun.AspNetCoreIdentityApp.Web.Controllers
 {
@@ -26,6 +27,12 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public IActionResult SignUp(SignUpWiewModel request)
+        {
+            return View();
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

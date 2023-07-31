@@ -12,7 +12,7 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.ViewModels
             Password = password;
         }
 
-        [Display(Name ="Kullanıcı Adı :")]
+        [Display(Name = "Kullanıcı Adı :")]
         public string UserName { get; set; }
 
         [Display(Name = "Email :")]
