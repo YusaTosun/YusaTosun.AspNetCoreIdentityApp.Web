@@ -5,26 +5,47 @@
 @model SignUpWiewModel
 <div class="col-md-6 offset-md-3">
     <h2>Kullanıcı Kayıt Formu</h2>
-    <form>     
+
+    @if (TempData["SucceededMessage"]!=null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["SucceededMessage"]
+        </div>
+    }
+
+    <div asp-validation-summary=ModelOnly class="alert alert-danger" role="alert">
+        
+    </div>
+
+    <form asp-controller="Home" asp-action="SignUp" method="post">     
         <label class="col-md-4 col-form-label" asp-for="UserName"></label>
         <div class="col-md-8">
             <input asp-for="UserName" class="form-control">
+            <span class="text-danger" asp-validation-for="UserName" ></span>
         </div>
         <label class="col-md-4 col-form-label" asp-for="Email"></label>
         <div class="col-md-8">
             <input asp-for="Email" class="form-control">
+            <span class="text-danger" asp-validation-for="Email"></span>
+
         </div>
         <label class="col-md-4 col-form-label" asp-for="Phone"></label>
         <div class="col-md-8">
             <input asp-for="Phone" class="form-control">
+            <span class="text-danger" asp-validation-for="Phone"></span>
+
         </div>
         <label class="col-md-4 col-form-label" asp-for="Password"></label>
         <div class="col-md-8">
             <input asp-for="Password" class="form-control">
+            <span class="text-danger" asp-validation-for="Password"></span>
+
         </div>
         <label class="col-md-4 col-form-label" asp-for="PasswordConfirm"></label>
         <div class="col-md-8">
             <input asp-for="PasswordConfirm" class="form-control">
+            <span class="text-danger" asp-validation-for="PasswordConfirm"></span>
+
         </div>
         <div class="row mb-3">
             <div class="col-md-8 offset-md-2">
