@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/YusaTosun.AspNetCoreIdentityApp.Web.styles.css" asp-append-version="true" />
+
+    @await RenderSectionAsync("Css", required: false)
+
 </head>
 <body>
     <header>
@@ -27,6 +30,8 @@
                         </li>
                     </ul>
                 </div>
+
+                <a asp-controller="Home" asp-action="SignUp" class="btn btn-outline-success" type="submit">Üye Kayıt</a>
             </div>
         </nav>
     </header>
