@@ -31,7 +31,7 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Areas.Admin.Controllers
                Email= x.Email,
                Name=x.UserName
             }).ToList();
-            return View(userList);
+            return View(userViewModelList);
         }
     }
 }
