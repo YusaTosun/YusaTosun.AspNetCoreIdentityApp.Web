@@ -12,7 +12,7 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.CustomValidations
             {
                 errors.Add(new IdentityError()
                 {
-                    Code = "PasswordNoContainUserName",Description = "Şifre kullanıcı adını içeremez",
+                    Code = "PasswordContainUserName",Description = "Şifre kullanıcı adını içeremez",
                 });
             }
 
@@ -20,7 +20,7 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.CustomValidations
             {
                 errors.Add(new IdentityError()
                 {
-                    Code = "PasswordNoStartWith1234",
+                    Code = "PasswordStartWith1234",
                     Description = "Şifre 1234 ile başlayamaz"
                 }); ;
             }
