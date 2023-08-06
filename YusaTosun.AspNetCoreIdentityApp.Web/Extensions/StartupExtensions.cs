@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using YusaTosun.AspNetCoreIdentityApp.Web.CustomValidations;
 using YusaTosun.AspNetCoreIdentityApp.Web.Models;
 
 namespace YusaTosun.AspNetCoreIdentityApp.Web.Extensions
@@ -7,17 +8,17 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Extensions
     {
         public static void AddIdentityWithExt(this IServiceCollection services)
         {
-            services.AddIdentity<AppUser, AppRole>(opt =>
+            services.AddIdentity<AppUser, AppRole>(options =>
             {
-                opt.User.RequireUniqueEmail = true;
-                opt.User.AllowedUserNameCharacters = "qwertyuopasdfghjklizxcvbnm1234567890";
-
-                opt.Password.RequiredLength = 6;
-                opt.Password.RequireNonAlphanumeric = false;
-                opt.Password.RequireLowercase = false;
-                opt.Password.RequireUppercase = false;
-                opt.Password.RequireDigit = false;
-            }).AddEntityFrameworkStores<AppDbContext>();
+                options.User.RequireUniqueEmail = true;
+                options.User.AllowedUserNameCharacters = "qwertyuopasdfghjklizxcvbnm1234567890";
+    
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequireDigit = true;
+            }).AddPasswordValidator<PasswordValidator>().AddEntityFrameworkStores<AppDbContext>();
 
         }
     }
