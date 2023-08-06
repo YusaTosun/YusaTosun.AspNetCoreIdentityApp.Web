@@ -11,14 +11,14 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Extensions
             services.AddIdentity<AppUser, AppRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
-                options.User.AllowedUserNameCharacters = "qwertyuopasdfghjklizxcvbnm1234567890";
+                options.User.AllowedUserNameCharacters = "qwertyuopasdfghjklizxcvbnm1234567890_";
     
                 options.Password.RequiredLength = 6;
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireLowercase = true;
                 options.Password.RequireUppercase = true;
                 options.Password.RequireDigit = true;
-            }).AddPasswordValidator<PasswordValidator>().AddEntityFrameworkStores<AppDbContext>();
+            }).AddPasswordValidator<PasswordValidator>().AddUserValidator<UserValidator>().AddEntityFrameworkStores<AppDbContext>();
 
         }
     }
