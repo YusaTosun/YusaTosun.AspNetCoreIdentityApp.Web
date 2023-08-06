@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using YusaTosun.AspNetCoreIdentityApp.Web.Extensions;
 using YusaTosun.AspNetCoreIdentityApp.Web.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +11,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlCon"));
 });
-builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddIdentityWithExt();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
