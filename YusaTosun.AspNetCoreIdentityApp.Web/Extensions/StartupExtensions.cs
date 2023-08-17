@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using YusaTosun.AspNetCoreIdentityApp.Web.CustomValidations;
+using YusaTosun.AspNetCoreIdentityApp.Web.Localizations;
 using YusaTosun.AspNetCoreIdentityApp.Web.Models;
 
 namespace YusaTosun.AspNetCoreIdentityApp.Web.Extensions
@@ -16,9 +17,9 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Extensions
                 options.Password.RequiredLength = 6;
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireDigit = true;
-            }).AddPasswordValidator<PasswordValidator>().AddUserValidator<UserValidator>().AddEntityFrameworkStores<AppDbContext>();
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+            }).AddPasswordValidator<PasswordValidator>().AddUserValidator<UserValidator>().AddErrorDescriber<LocalizationIdentityErrorDescriber>().AddEntityFrameworkStores<AppDbContext>();
 
         }
     }
