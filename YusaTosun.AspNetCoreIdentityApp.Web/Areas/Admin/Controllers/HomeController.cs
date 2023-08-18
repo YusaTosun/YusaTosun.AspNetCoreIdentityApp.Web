@@ -25,11 +25,11 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Areas.Admin.Controllers
         {
             var userList = await _userManager.Users.ToListAsync();
 
-            var userViewModelList = userList.Select(x=>new UserViewModel()
+            var userViewModelList = userList.Select(x => new UserViewModel()
             {
-               Id = x.Id,
-               Email= x.Email,
-               Name=x.UserName
+                Id = x.Id,
+                Email = x.Email,
+                Name = x.UserName
             }).ToList();
             return View(userViewModelList);
         }
