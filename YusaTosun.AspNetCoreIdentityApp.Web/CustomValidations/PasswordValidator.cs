@@ -12,7 +12,8 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.CustomValidations
             {
                 errors.Add(new IdentityError()
                 {
-                    Code = "PasswordContainUserName",Description = "Şifre kullanıcı adını içeremez",
+                    Code = "PasswordContainUserName",
+                    Description = "Şifre kullanıcı adını içeremez",
                 });
             }
 

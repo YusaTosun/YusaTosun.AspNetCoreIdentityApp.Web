@@ -14,7 +14,8 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.CustomValidations
             {
                 errors.Add(new IdentityError()
                 {
-                    Code="UserNameContainFirstLetterDigit",Description="Kullanıcı adının ilk karakteri sayısal olamaz"
+                    Code = "UserNameContainFirstLetterDigit",
+                    Description = "Kullanıcı adının ilk karakteri sayısal olamaz"
                 });
             }
 
