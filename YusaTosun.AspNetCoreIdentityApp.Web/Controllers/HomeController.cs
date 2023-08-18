@@ -47,14 +47,19 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Controllers
                 ModelState.AddModelError(string.Empty, "Email veya Şifre yanlış");
                 return View();
             }
-            var signInResult = await _signInManager.PasswordSignInAsync(hasUser, model.Password, model.RememberMe, false);
+            var signInResult = await _signInManager.PasswordSignInAsync(hasUser, model.Password, model.RememberMe, true);
 
             if (signInResult.Succeeded)
             {
                 return Redirect(returnUrl);
             }
+            if (signInResult.IsLockedOut)
+            {
+                ModelState.AddModelErrorList(new List<string>() {"3 Dakika boyunca giriş yapamazsınız"});
+                return View();
+            }
 
-            ModelState.AddModelErrorList(new List<string>() { "Email yada şifre yanlış"});
+            ModelState.AddModelErrorList(new List<string>() { $"Email veya şifre yanlış(Başarısız giriş sayısı={_UserManager.GetAccessFailedCountAsync(hasUser)})"});
 
             return View();
         }
