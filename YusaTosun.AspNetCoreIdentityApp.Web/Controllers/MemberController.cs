@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using YusaTosun.AspNetCoreIdentityApp.Web.Models;
 
 namespace YusaTosun.AspNetCoreIdentityApp.Web.Controllers
 {
+    [Authorize]
     public class MemberController : Controller
     {
         private readonly SignInManager<AppUser> _signInManager;
@@ -17,6 +19,10 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Controllers
         {
            await _signInManager.SignOutAsync();
             return LocalRedirect(returnUrl);
+        }
+        public IActionResult Index()
+        {
+            return View();
         }
     }
 }

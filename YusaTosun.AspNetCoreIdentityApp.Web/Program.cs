@@ -18,7 +18,7 @@ builder.Services.ConfigureApplicationCookie(opt =>
     var cookieBuilder = new CookieBuilder();
     cookieBuilder.Name = "YusaAppCookie";
     opt.LoginPath = new PathString("/Home/SignIn");
-    opt.LogoutPath = new PathString("/Home/LogOut");
+    //opt.LogoutPath = new PathString("/Home/LogOut"); // todo: bunun gerekliliðine karar ver
     opt.Cookie=cookieBuilder;
     opt.ExpireTimeSpan = TimeSpan.FromDays(60);
     opt.SlidingExpiration = true; // Giriþ Yapýldýkça Cookienin ExpireTime'ýný resetler
@@ -39,7 +39,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 
