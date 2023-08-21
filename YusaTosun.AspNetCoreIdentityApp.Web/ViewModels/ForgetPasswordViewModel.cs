@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace YusaTosun.AspNetCoreIdentityApp.Web.Models
+namespace YusaTosun.AspNetCoreIdentityApp.Web.ViewModels
 {
     public class ForgetPasswordViewModel
     {

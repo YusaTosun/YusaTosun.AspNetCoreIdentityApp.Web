@@ -31,11 +31,13 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.ViewModels
 
         [Required(ErrorMessage = "Şifre Boş Bırakılamaz")]
         [Display(Name = "Şifre :")]
+        [DataType(DataType.Password)]
         public string Password { get; set; }
 
         [Compare(nameof(Password), ErrorMessage = "Şifreleriniz aynı değil.")] //todo : Aldığı parametreleri incele
         [Required(ErrorMessage = "Şifre Tekrarı Boş Bırakılamaz")]
         [Display(Name = "Şifre Tekrar :")]
+        [DataType(DataType.Password)]
         public string PasswordConfirm { get; set; }
 
 

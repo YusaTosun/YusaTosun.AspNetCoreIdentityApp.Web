@@ -14,7 +14,7 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Controllers
         private readonly UserManager<AppUser> _UserManager;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly IEmailService _emailService;
-        public HomeController(IEmailService emailService,ILogger<HomeController> logger, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public HomeController(IEmailService emailService, ILogger<HomeController> logger, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _logger = logger;
             _UserManager = userManager;
@@ -42,7 +42,7 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> SignIn(SignInViewModel model, string? returnUrl = null)
         {
-            returnUrl = returnUrl ?? Url.Action("Index", "Home");
+            returnUrl ??= Url.Action("Index", "Home");
             var hasUser = await _UserManager.FindByEmailAsync(model.Email);
 
             if (hasUser is null)
@@ -58,11 +58,11 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Controllers
             }
             if (signInResult.IsLockedOut)
             {
-                ModelState.AddModelErrorList(new List<string>() {"3 Dakika boyunca giriş yapamazsınız"});
+                ModelState.AddModelErrorList(new List<string>() { "3 Dakika boyunca giriş yapamazsınız" });
                 return View();
             }
 
-            ModelState.AddModelErrorList(new List<string>() { $"Email veya şifre yanlış(Başarısız giriş sayısı={_UserManager.GetAccessFailedCountAsync(hasUser)})"});
+            ModelState.AddModelErrorList(new List<string>() { $"Email veya şifre yanlış(Başarısız giriş sayısı={await _UserManager.GetAccessFailedCountAsync(hasUser)})" });
 
             return View();
         }
@@ -82,7 +82,7 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Controllers
                 return RedirectToAction(nameof(HomeController.SignUp));
             }
 
-            ModelState.AddModelErrorList(identityResult.Errors.Select(x=>x.Description).ToList());
+            ModelState.AddModelErrorList(identityResult.Errors.Select(x => x.Description).ToList());
 
             return View();
         }
@@ -102,24 +102,66 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Controllers
         {
             var hasUser = await _UserManager.FindByEmailAsync(request.Email);
 
-            if (hasUser==null)
+            if (hasUser == null)
             {
-                ModelState.AddModelError(string.Empty,"Bu email adresine sahip kullanıcı bulunamamıştır.");
+                ModelState.AddModelError(string.Empty, "Bu email adresine sahip kullanıcı bulunamamıştır.");
                 return View();
             }
 
             string passwordResetToken = await _UserManager.GeneratePasswordResetTokenAsync(hasUser);
 
-            var passwordResetLink = Url.Action("ResetPassword","Home",new {userId = hasUser.Id,Token=passwordResetToken},HttpContext.Request.Scheme);
+            var passwordResetLink = Url.Action("ResetPassword", "Home", new { userId = hasUser.Id, Token = passwordResetToken }, HttpContext.Request.Scheme);
 
             // link
             // https://localhost:7163?userId=12213&token=hdfjsadsdahjkghgj
 
-            await _emailService.SendResetPasswordEmail(passwordResetLink,hasUser.Email);
+            await _emailService.SendResetPasswordEmail(passwordResetLink!, hasUser.Email!);
 
             TempData["SucceededMessage"] = "Şifre yenileme linki,e-posta adresinize gönderilmiştir";
 
             return RedirectToAction(nameof(ForgetPassword));
+        }
+
+        public IActionResult ResetPassword(string userId, string token)
+        {
+            TempData["userId"] = userId;
+            TempData["token"] = token;
+
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel request)
+        {
+            var userId = TempData["userId"];
+            var token = TempData["token"];
+
+            if (userId == null || token == null)
+            {
+                throw new Exception("Bir Hata meydana geldi");
+            }
+
+            var hasUser = await _UserManager.FindByIdAsync(userId.ToString()!);
+
+            if (hasUser == null)
+            {
+                ModelState.AddModelError(string.Empty, "Kullanıcı Bulunamamıştır");
+                return View();
+            }
+
+            var result = await _UserManager.ResetPasswordAsync(hasUser, token.ToString()!, request.PasswordConfirm!);
+
+            if (result.Succeeded)
+            {
+                TempData["SuccessMessage"] = "Şifreniz başarıyla yenilenmiştir";
+            }
+            else
+            {
+                ModelState.AddModelErrorList(result.Errors.Select(x => x.Description).ToList());
+
+                return View();
+            }
+
+            return View();
         }
     }
 }
