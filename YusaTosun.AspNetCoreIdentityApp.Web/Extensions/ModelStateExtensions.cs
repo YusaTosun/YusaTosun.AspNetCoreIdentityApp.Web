@@ -4,11 +4,11 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Extensions
 {
     public static class ModelStateExtensions
     {
-        public static void AddModelErrorList(this ModelStateDictionary modelState,List<string> errors)
+        public static void AddModelErrorList(this ModelStateDictionary modelState, List<string> errors)
         {
-            errors.ForEach(x=>
+            errors.ForEach(x =>
             {
-                modelState.AddModelError(string.Empty,x);
+                modelState.AddModelError(string.Empty, x);
             });
         }
     }

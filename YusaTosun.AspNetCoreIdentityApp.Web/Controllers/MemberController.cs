@@ -17,13 +17,13 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Controllers
 
         public async Task<IActionResult> LogOut(string returnUrl)
         {
-           await _signInManager.SignOutAsync();
+            await _signInManager.SignOutAsync();
             return LocalRedirect(returnUrl);
         }
         public IActionResult Index()
         {
             return View();
         }
-        
+
     }
 }

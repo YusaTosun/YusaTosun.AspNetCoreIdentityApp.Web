@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using YusaTosun.AspNetCoreIdentityApp.Web.Extensions;
 using YusaTosun.AspNetCoreIdentityApp.Web.Models;
@@ -18,14 +16,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddIdentityWithExt();
-builder.Services.AddScoped<IEmailService,EmailService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.ConfigureApplicationCookie(opt =>
 {
     var cookieBuilder = new CookieBuilder();
     cookieBuilder.Name = "YusaAppCookie";
     opt.LoginPath = new PathString("/Home/SignIn");
     //opt.LogoutPath = new PathString("/Home/LogOut"); // todo: bunun gerekliliðine karar ver
-    opt.Cookie=cookieBuilder;
+    opt.Cookie = cookieBuilder;
     opt.ExpireTimeSpan = TimeSpan.FromDays(60);
     opt.SlidingExpiration = true; // Giriþ Yapýldýkça Cookienin ExpireTime'ýný resetler
 });
