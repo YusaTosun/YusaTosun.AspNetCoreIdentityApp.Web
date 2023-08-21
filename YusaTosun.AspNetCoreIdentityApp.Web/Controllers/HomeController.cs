@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using YusaTosun.AspNetCoreIdentityApp.Web.Extensions;
 using YusaTosun.AspNetCoreIdentityApp.Web.Models;
+using YusaTosun.AspNetCoreIdentityApp.Web.Services;
 using YusaTosun.AspNetCoreIdentityApp.Web.ViewModels;
 
 namespace YusaTosun.AspNetCoreIdentityApp.Web.Controllers
@@ -12,11 +13,13 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<AppUser> _UserManager;
         private readonly SignInManager<AppUser> _signInManager;
-        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        private readonly IEmailService _emailService;
+        public HomeController(IEmailService emailService,ILogger<HomeController> logger, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _logger = logger;
             _UserManager = userManager;
             _signInManager = signInManager;
+            _emailService = emailService;
         }
 
         public IActionResult Index()
@@ -89,6 +92,34 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordViewModel request)
+        {
+            var hasUser = await _UserManager.FindByEmailAsync(request.Email);
+
+            if (hasUser==null)
+            {
+                ModelState.AddModelError(string.Empty,"Bu email adresine sahip kullanıcı bulunamamıştır.");
+                return View();
+            }
+
+            string passwordResetToken = await _UserManager.GeneratePasswordResetTokenAsync(hasUser);
+
+            var passwordResetLink = Url.Action("ResetPassword","Home",new {userId = hasUser.Id,Token=passwordResetToken},HttpContext.Request.Scheme);
+
+            // link
+            // https://localhost:7163?userId=12213&token=hdfjsadsdahjkghgj
+
+            await _emailService.SendResetPasswordEmail(passwordResetLink,hasUser.Email);
+
+            TempData["SucceededMessage"] = "Şifre yenileme linki,e-posta adresinize gönderilmiştir";
+
+            return RedirectToAction(nameof(ForgetPassword));
         }
     }
 }

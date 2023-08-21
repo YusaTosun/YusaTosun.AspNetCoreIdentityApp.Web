@@ -1,6 +1,10 @@
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using YusaTosun.AspNetCoreIdentityApp.Web.Extensions;
 using YusaTosun.AspNetCoreIdentityApp.Web.Models;
+using YusaTosun.AspNetCoreIdentityApp.Web.OptionsModels;
+using YusaTosun.AspNetCoreIdentityApp.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,8 +15,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlCon"));
 });
-builder.Services.AddIdentityWithExt();
 
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddIdentityWithExt();
+builder.Services.AddScoped<IEmailService,EmailService>();
 builder.Services.ConfigureApplicationCookie(opt =>
 {
     var cookieBuilder = new CookieBuilder();

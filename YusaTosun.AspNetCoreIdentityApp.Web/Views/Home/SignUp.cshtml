@@ -3,11 +3,13 @@
 }
 
 @model SignUpWiewModel
+
 @section Scripts{
 
     @await Html.PartialAsync("_ValidationScriptsPartial")
 
 }
+
 <div class="row">
     <div class="col-md-6 offset-md-3">
         <h2>Kullanıcı Kayıt Formu</h2>
@@ -22,7 +24,7 @@
         <div asp-validation-summary=ModelOnly class="alert alert-danger" role="alert">
         </div>
 
-        <form asp-controller="Home" asp-action="SignUp" method="post">
+        <form method="post">
             <label class="col-md-4 col-form-label" asp-for="UserName"></label>
             <div class="col-md-8">
                 <input asp-for="UserName" class="form-control">

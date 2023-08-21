@@ -24,5 +24,6 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Controllers
         {
             return View();
         }
+        
     }
 }

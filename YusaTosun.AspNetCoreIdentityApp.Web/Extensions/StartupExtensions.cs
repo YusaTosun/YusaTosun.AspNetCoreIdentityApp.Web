@@ -1,4 +1,5 @@
-﻿using YusaTosun.AspNetCoreIdentityApp.Web.CustomValidations;
+﻿using Microsoft.AspNetCore.Identity;
+using YusaTosun.AspNetCoreIdentityApp.Web.CustomValidations;
 using YusaTosun.AspNetCoreIdentityApp.Web.Localizations;
 using YusaTosun.AspNetCoreIdentityApp.Web.Models;
 
@@ -8,6 +9,12 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Extensions
     {
         public static void AddIdentityWithExt(this IServiceCollection services)
         {
+
+            services.Configure<DataProtectionTokenProviderOptions>(options =>
+            {
+                options.TokenLifespan = TimeSpan.FromHours(2);
+            });
+
             services.AddIdentity<AppUser, AppRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
@@ -22,7 +29,9 @@ namespace YusaTosun.AspNetCoreIdentityApp.Web.Extensions
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
                 options.Lockout.MaxFailedAccessAttempts = 3;
 
-            }).AddPasswordValidator<PasswordValidator>().AddUserValidator<UserValidator>().AddErrorDescriber<LocalizationIdentityErrorDescriber>().AddEntityFrameworkStores<AppDbContext>();
+            }).AddPasswordValidator<PasswordValidator>().AddUserValidator<UserValidator>().AddErrorDescriber<LocalizationIdentityErrorDescriber>()
+            .AddDefaultTokenProviders()
+            .AddEntityFrameworkStores<AppDbContext>();
 
         }
     }
